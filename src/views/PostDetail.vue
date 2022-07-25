@@ -41,62 +41,62 @@ import Modal from '../components/Modal.vue'
 import createMessage from '../components/createMessage'
 
 export default defineComponent({
-  name: 'post-detail',
-  components: {
-    UserProfile,
-    Modal
-  },
-  setup() {
-    const store = useStore<GlobalDataProps>()
-    const route = useRoute()
-    const router = useRouter()
-    const modalIsVisible = ref(false)
-    const currentId = route.params.id
-    const md = new MarkdownIt()
-    onMounted(() => {
-      store.dispatch('fetchPost', currentId)
-    })
-    const currentPost = computed<PostProps>(() => store.getters.getCurrentPost(currentId))
-    const currentHTML = computed(() => {
-      const { content, isHTML } = currentPost.value
-      if (currentPost.value && content) {
-        return isHTML ? content : md.render(content)
-      }
-    })
-    const showEditArea = computed(() => {
-      const { isLogin, _id } = store.state.user
-      if (currentPost.value && currentPost.value.author && isLogin) {
-        const postAuthor = currentPost.value.author as UserProps
-        return postAuthor._id === _id
-      } else {
-        return false
-      }
-    })
-    const currentImageUrl = computed(() => {
-      if (currentPost.value && currentPost.value.image) {
-        const { image } = currentPost.value
-        return (image as ImageProps).url + '?x-oss-process=image/resize,w_850'
-      } else {
-        return null
-      }
-    })
-    const hideAndDelete = () => {
-      modalIsVisible.value = false
-      store.dispatch('deletePost', currentId).then((rawData: ResponseType<PostProps>) => {
-        createMessage('删除成功，2秒后跳转到专栏首页', 'success', 2000)
-        setTimeout(() => {
-          router.push({ name: 'column', params: { id: rawData.data.column } })
-        }, 2000)
-      })
+    name: 'post-detail',
+    components: {
+        UserProfile,
+        Modal
+    },
+    setup() {
+        const store = useStore<GlobalDataProps>()
+        const route = useRoute()
+        const router = useRouter()
+        const modalIsVisible = ref(false)
+        const currentId = route.params.id
+        const md = new MarkdownIt()
+        onMounted(() => {
+            store.dispatch('fetchPost', currentId)
+        })
+        const currentPost = computed<PostProps>(() => store.getters.getCurrentPost(currentId))
+        const currentHTML = computed(() => {
+            const { content, isHTML } = currentPost.value
+            if (currentPost.value && content) {
+                return isHTML ? content : md.render(content)
+            }
+        })
+        const showEditArea = computed(() => {
+            const { isLogin, _id } = store.state.user
+            if (currentPost.value && currentPost.value.author && isLogin) {
+                const postAuthor = currentPost.value.author as UserProps
+                return postAuthor._id === _id
+            } else {
+                return false
+            }
+        })
+        const currentImageUrl = computed(() => {
+            if (currentPost.value && currentPost.value.image) {
+                const { image } = currentPost.value
+                return (image as ImageProps).url + '?x-oss-process=image/resize,w_850'
+            } else {
+                return null
+            }
+        })
+        const hideAndDelete = () => {
+            modalIsVisible.value = false
+            store.dispatch('deletePost', currentId).then((rawData: ResponseType<PostProps>) => {
+                createMessage('删除成功，2秒后跳转到专栏首页', 'success', 2000)
+                setTimeout(() => {
+                    router.push({ name: 'column', params: { id: rawData.data.column } })
+                }, 2000)
+            })
+        }
+        return {
+            currentPost,
+            currentImageUrl,
+            currentHTML,
+            showEditArea,
+            modalIsVisible,
+            hideAndDelete
+        }
     }
-    return {
-      currentPost,
-      currentImageUrl,
-      currentHTML,
-      showEditArea,
-      modalIsVisible,
-      hideAndDelete
-    }
-  }
 })
 </script>

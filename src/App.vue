@@ -27,28 +27,28 @@ import Loader from './components/Loader.vue'
 import createMessage from './components/createMessage'
 import { GlobalDataProps } from './store'
 export default defineComponent({
-  name: 'App',
-  components: {
-    GlobalHeader,
-    Loader
-  },
-  setup() {
-    const store = useStore<GlobalDataProps>()
-    const currentUser = computed(() => store.state.user)
-    const isLoading = computed(() => store.state.loading)
-    const error = computed(() => store.state.error)
-    watch(() => error.value.status, () => {
-      const { status, message } = error.value
-      if (status && message) {
-        createMessage(message, 'error')
-      }
-    })
-    return {
-      currentUser,
-      isLoading,
-      error
+    name: 'App',
+    components: {
+        GlobalHeader,
+        Loader
+    },
+    setup() {
+        const store = useStore<GlobalDataProps>()
+        const currentUser = computed(() => store.state.user)
+        const isLoading = computed(() => store.state.loading)
+        const error = computed(() => store.state.error)
+        watch(() => error.value.status, () => {
+            const { status, message } = error.value
+            if (status && message) {
+                createMessage(message, 'error')
+            }
+        })
+        return {
+            currentUser,
+            isLoading,
+            error
+        }
     }
-  }
 })
 </script>
 

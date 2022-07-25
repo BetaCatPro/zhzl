@@ -25,16 +25,16 @@ import DropdownItem from './DropdownItem.vue'
 import { UserProps } from '../store'
 
 export default defineComponent({
-  name: 'GlobalHeader',
-  components: {
-    Dropdown,
-    DropdownItem
-  },
-  props: {
-    user: {
-      type: Object as PropType<UserProps>,
-      required: true
+    name: 'GlobalHeader',
+    components: {
+        Dropdown,
+        DropdownItem
+    },
+    props: {
+        user: {
+            type: Object as PropType<UserProps>,
+            required: true
+        }
     }
-  }
 })
 </script>

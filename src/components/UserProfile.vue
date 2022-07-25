@@ -15,22 +15,22 @@ import { defineComponent, computed, PropType } from 'vue'
 import { UserProps } from '../store'
 import { addColumnAvatar } from '../helper'
 export default defineComponent({
-  props: {
-    user: {
-      type: Object as PropType<UserProps>,
-      required: true
+    props: {
+        user: {
+            type: Object as PropType<UserProps>,
+            required: true
+        }
+    },
+    setup(props) {
+        const fitUrl = computed(() => {
+            addColumnAvatar(props.user, 50, 50)
+            const { avatar } = props.user
+            return avatar && avatar.fitUrl
+        })
+        return {
+            fitUrl
+        }
     }
-  },
-  setup(props) {
-    const fitUrl = computed(() => {
-      addColumnAvatar(props.user, 50, 50)
-      const { avatar } = props.user
-      return avatar && avatar.fitUrl
-    })
-    return {
-      fitUrl
-    }
-  }
 })
 </script>
 

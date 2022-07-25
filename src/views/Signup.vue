@@ -52,65 +52,65 @@ import ValidateForm from '../components/ValidateForm.vue'
 import createMessage from '../components/createMessage'
 
 export default defineComponent({
-  name: 'Signup',
-  components: {
-    ValidateInput,
-    ValidateForm
-  },
-  setup() {
-    const formData = reactive({
-      email: '',
-      nickName: '',
-      password: '',
-      repeatPassword: ''
-    })
-    const router = useRouter()
-    const emailRules: RulesProp = [
-      { type: 'required', message: '电子邮箱地址不能为空' },
-      { type: 'email', message: '请输入正确的电子邮箱格式' }
-    ]
-    const nameRules: RulesProp = [
-      { type: 'required', message: '昵称不能为空' }
-    ]
-    const passwordRules: RulesProp = [
-      { type: 'required', message: '密码不能为空' }
-    ]
-    const repeatPasswordRules: RulesProp = [
-      { type: 'required', message: '重复密码不能为空' },
-      {
-        type: 'custom',
-        validator: () => {
-          return formData.password === formData.repeatPassword
-        },
-        message: '密码不相同'
-      }
-    ]
-    const onFormSubmit = (result: boolean) => {
-      if (result) {
-        const payload = {
-          email: formData.email,
-          password: formData.password,
-          nickName: formData.nickName
-        }
-        axios.post('/users/', payload).then(data => {
-          createMessage('注册成功 正在跳转登录页面', 'success')
-          setTimeout(() => {
-            router.push('/login')
-          }, 2000)
-        }).catch(e => {
-          console.log(e)
+    name: 'Signup',
+    components: {
+        ValidateInput,
+        ValidateForm
+    },
+    setup() {
+        const formData = reactive({
+            email: '',
+            nickName: '',
+            password: '',
+            repeatPassword: ''
         })
-      }
+        const router = useRouter()
+        const emailRules: RulesProp = [
+            { type: 'required', message: '电子邮箱地址不能为空' },
+            { type: 'email', message: '请输入正确的电子邮箱格式' }
+        ]
+        const nameRules: RulesProp = [
+            { type: 'required', message: '昵称不能为空' }
+        ]
+        const passwordRules: RulesProp = [
+            { type: 'required', message: '密码不能为空' }
+        ]
+        const repeatPasswordRules: RulesProp = [
+            { type: 'required', message: '重复密码不能为空' },
+            {
+                type: 'custom',
+                validator: () => {
+                    return formData.password === formData.repeatPassword
+                },
+                message: '密码不相同'
+            }
+        ]
+        const onFormSubmit = (result: boolean) => {
+            if (result) {
+                const payload = {
+                    email: formData.email,
+                    password: formData.password,
+                    nickName: formData.nickName
+                }
+                axios.post('/users/', payload).then(data => {
+                    createMessage('注册成功 正在跳转登录页面', 'success')
+                    setTimeout(() => {
+                        router.push('/login')
+                    }, 2000)
+                }).catch(e => {
+                    console.log(e)
+                })
+            }
+        }
+        return {
+            emailRules,
+            nameRules,
+            passwordRules,
+            repeatPasswordRules,
+            onFormSubmit,
+            formData
+        }
     }
-    return {
-      emailRules,
-      nameRules,
-      passwordRules,
-      repeatPasswordRules,
-      onFormSubmit,
-      formData
-    }
-  }
 })
 </script>
 

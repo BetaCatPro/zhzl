@@ -25,74 +25,74 @@ import axios from 'axios'
 type UploadStatus = 'ready' | 'loading' | 'success' | 'error'
 type CheckFunction = (file: File) => boolean;
 export default defineComponent({
-  props: {
-    action: {
-      type: String,
-      required: true
-    },
-    beforeUpload: {
-      type: Function as PropType<CheckFunction>
-    },
-    uploaded: {
-      type: Object
-    }
-  },
-  inheritAttrs: false,
-  emits: ['file-uploaded', 'file-uploaded-error'],
-  setup(props, context) {
-    const fileInput = ref<null | HTMLInputElement>(null)
-    console.log(props.uploaded)
-    const fileStatus = ref<UploadStatus>(props.uploaded ? 'success' : 'ready')
-    const uploadedData = ref(props.uploaded)
-    watch(() => props.uploaded, (newValue) => {
-      if (newValue) {
-        fileStatus.value = 'success'
-        uploadedData.value = newValue
-      }
-    })
-    const triggerUpload = () => {
-      if (fileInput.value) {
-        fileInput.value.click()
-      }
-    }
-    const handleFileChange = (e: Event) => {
-      const currentTarget = e.target as HTMLInputElement
-      if (currentTarget.files) {
-        const files = Array.from(currentTarget.files)
-        if (props.beforeUpload) {
-          const result = props.beforeUpload(files[0])
-          if (!result) {
-            return
-          }
+    props: {
+        action: {
+            type: String,
+            required: true
+        },
+        beforeUpload: {
+            type: Function as PropType<CheckFunction>
+        },
+        uploaded: {
+            type: Object
         }
-        fileStatus.value = 'loading'
-        const formData = new FormData()
-        formData.append('file', files[0])
-        axios.post(props.action, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then(resp => {
-          fileStatus.value = 'success'
-          uploadedData.value = resp.data
-          context.emit('file-uploaded', resp.data)
-        }).catch((error) => {
-          fileStatus.value = 'error'
-          context.emit('file-uploaded-error', { error })
-        }).finally(() => {
-          if (fileInput.value) {
-            fileInput.value.value = ''
-          }
+    },
+    inheritAttrs: false,
+    emits: ['file-uploaded', 'file-uploaded-error'],
+    setup(props, context) {
+        const fileInput = ref<null | HTMLInputElement>(null)
+        console.log(props.uploaded)
+        const fileStatus = ref<UploadStatus>(props.uploaded ? 'success' : 'ready')
+        const uploadedData = ref(props.uploaded)
+        watch(() => props.uploaded, (newValue) => {
+            if (newValue) {
+                fileStatus.value = 'success'
+                uploadedData.value = newValue
+            }
         })
-      }
+        const triggerUpload = () => {
+            if (fileInput.value) {
+                fileInput.value.click()
+            }
+        }
+        const handleFileChange = (e: Event) => {
+            const currentTarget = e.target as HTMLInputElement
+            if (currentTarget.files) {
+                const files = Array.from(currentTarget.files)
+                if (props.beforeUpload) {
+                    const result = props.beforeUpload(files[0])
+                    if (!result) {
+                        return
+                    }
+                }
+                fileStatus.value = 'loading'
+                const formData = new FormData()
+                formData.append('file', files[0])
+                axios.post(props.action, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(resp => {
+                    fileStatus.value = 'success'
+                    uploadedData.value = resp.data
+                    context.emit('file-uploaded', resp.data)
+                }).catch((error) => {
+                    fileStatus.value = 'error'
+                    context.emit('file-uploaded-error', { error })
+                }).finally(() => {
+                    if (fileInput.value) {
+                        fileInput.value.value = ''
+                    }
+                })
+            }
+        }
+        return {
+            fileInput,
+            triggerUpload,
+            fileStatus,
+            uploadedData,
+            handleFileChange
+        }
     }
-    return {
-      fileInput,
-      triggerUpload,
-      fileStatus,
-      uploadedData,
-      handleFileChange
-    }
-  }
 })
 </script>

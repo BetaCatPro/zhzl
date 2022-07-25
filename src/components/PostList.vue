@@ -20,23 +20,23 @@ import { defineComponent, PropType, computed } from 'vue'
 import { PostProps, ImageProps } from '../store'
 import { generateFitUrl } from '../helper'
 export default defineComponent({
-  props: {
-    list: {
-      required: true,
-      type: Array as PropType<PostProps[]>
+    props: {
+        list: {
+            required: true,
+            type: Array as PropType<PostProps[]>
+        }
+    },
+    setup(props) {
+        const posts = computed(() => {
+            return props.list.map(post => {
+                generateFitUrl(post.image as ImageProps, 200, 110, ['m_fill'])
+                return post
+            })
+        })
+        return {
+            posts
+        }
     }
-  },
-  setup(props) {
-    const posts = computed(() => {
-      return props.list.map(post => {
-        generateFitUrl(post.image as ImageProps, 200, 110, ['m_fill'])
-        return post
-      })
-    })
-    return {
-      posts
-    }
-  }
 })
 </script>
 

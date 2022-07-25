@@ -18,22 +18,22 @@
 import { defineComponent, onUnmounted } from 'vue'
 
 export default defineComponent({
-  props: {
-    text: {
-      type: String
+    props: {
+        text: {
+            type: String
+        },
+        background: {
+            type: String
+        }
     },
-    background: {
-      type: String
+    setup() {
+        const node = document.createElement('div')
+        node.id = 'back'
+        document.body.appendChild(node)
+        onUnmounted(() => {
+            document.body.removeChild(node)
+        })
     }
-  },
-  setup() {
-    const node = document.createElement('div')
-    node.id = 'back'
-    document.body.appendChild(node)
-    onUnmounted(() => {
-      document.body.removeChild(node)
-    })
-  }
 })
 </script>
 

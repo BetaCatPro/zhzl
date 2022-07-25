@@ -31,24 +31,24 @@ import useLoadMore from '../hooks/useLoadMore'
 import ColumnList from '../components/ColumnList.vue'
 
 export default defineComponent({
-  name: 'Home',
-  components: {
-    ColumnList
-  },
-  setup() {
-    const store = useStore<GlobalDataProps>()
-    const total = computed(() => store.state.columns.total)
-    const currentPage = computed(() => store.state.columns.currentPage)
-    onMounted(() => {
-      store.dispatch('fetchColumns', { pageSize: 3 })
-    })
-    const list = computed(() => store.getters.getColumns)
-    const { loadMorePage, isLastPage } = useLoadMore('fetchColumns', total, { pageSize: 3, currentPage: (currentPage.value ? currentPage.value + 1 : 2) })
-    return {
-      list,
-      loadMorePage,
-      isLastPage
+    name: 'Home',
+    components: {
+        ColumnList
+    },
+    setup() {
+        const store = useStore<GlobalDataProps>()
+        const total = computed(() => store.state.columns.total)
+        const currentPage = computed(() => store.state.columns.currentPage)
+        onMounted(() => {
+            store.dispatch('fetchColumns', { pageSize: 3 })
+        })
+        const list = computed(() => store.getters.getColumns)
+        const { loadMorePage, isLastPage } = useLoadMore('fetchColumns', total, { pageSize: 3, currentPage: (currentPage.value ? currentPage.value + 1 : 2) })
+        return {
+            list,
+            loadMorePage,
+            isLastPage
+        }
     }
-  }
 })
 </script>

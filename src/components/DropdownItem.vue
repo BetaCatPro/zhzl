@@ -10,12 +10,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-  props: {
-    disabled: {
-      type: Boolean,
-      default: false
+    props: {
+        disabled: {
+            type: Boolean,
+            default: false
+        }
     }
-  }
 })
 </script>
 
