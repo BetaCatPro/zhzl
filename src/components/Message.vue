@@ -10,7 +10,7 @@
     </teleport>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { defineProps, defineEmits, PropType, ref } from 'vue'
 import useDOMCreate from '@/hooks/useDOMCreate'
 
