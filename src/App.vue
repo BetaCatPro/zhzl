@@ -17,7 +17,7 @@
     </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import 'bootstrap/dist/css/bootstrap.min.css'

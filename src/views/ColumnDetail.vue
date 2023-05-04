@@ -14,8 +14,8 @@
     </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onMounted } from 'vue'
+<script setup lang="ts">
+import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { ColumnProps, GlobalDataProps } from '../store'

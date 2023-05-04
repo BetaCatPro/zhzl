@@ -7,7 +7,7 @@
     </li>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineProps } from 'vue'
 
 const props = defineProps({
